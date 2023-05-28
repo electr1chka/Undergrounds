@@ -1,20 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import MainPage from "./src/screens/mainPage";
+import MapPage from './src/screens/mapPage';
+import AboutPage from './src/screens/aboutPage';
+
+import {
+  useFonts,
+  JosefinSans_400Regular,
+  JosefinSans_500Medium,
+} from "@expo-google-fonts/josefin-sans";
+import { Nunito_600SemiBold, Nunito_700Bold } from "@expo-google-fonts/nunito";
+import AppLoading from "expo-app-loading";
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='MainPage'>
+        <Stack.Screen name="Home">
+          {(props) => <MainPage {...props} channelName={"undergrounds"}/>}
+        </Stack.Screen>
+
+        <Stack.Screen 
+        name="MapPage"
+        component={MapPage}/>
+
+        <Stack.Screen 
+        name="AboutPage"
+        component={AboutPage}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
