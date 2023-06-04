@@ -1,34 +1,20 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from 'react';
 import Menu from "../component/menu"
+import Status from "../component/getInfo";
+import axios from 'axios';
+import SelectDropdown from 'react-native-select-dropdown'
 
 const MainPage = (props) => {
-  const description = "1";
-    //"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. ";
-
+  const groups = axios.get('https://my-json-server.typicode.com/electr1chka/fake-api/groups/');
   return (
     <View style={styles.mainContainer}>
       <View style={styles.homeTop}>
-        <Image
-          style={styles.headerImage}
-          resizeMode="contain"
-          source={require("../../assets/logo.jpeg")}
-        />
+        <Status></Status>
+        
+        
+        
 
-        <Text style={styles.mainHeader}>Welcome to</Text>
-        <Text
-          style={[
-            styles.mainHeader,
-            {
-              fontSize: 33,
-              color: "#4c5dab",
-              marginTop: 0,
-            },
-          ]}>
-          {props.channelName}
-        </Text>
-
-        <Text style={styles.paraStyle}>{description} </Text>
       </View>
 
       <View style={styles.menuStyle}>
@@ -43,6 +29,7 @@ const MainPage = (props) => {
           ]}*/></View>
       </View>
     </View>
+    
   );
 };
 
@@ -54,6 +41,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "#fff",
     textAlign: "center",
+    backgroundColor: '#292928'
   },
 
   homeTop: {

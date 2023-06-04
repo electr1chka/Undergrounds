@@ -20,17 +20,35 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='MainPage'>
-        <Stack.Screen name="Home">
+        <Stack.Screen name="Home" 
+        options={{
+          title: 'Home',
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: "#1a1a1a",  
+        }}}>
           {(props) => <MainPage {...props} channelName={"undergrounds"}/>}
         </Stack.Screen>
 
         <Stack.Screen 
         name="MapPage"
-        component={MapPage}/>
+        component={MapPage}
+        options={{
+          title: 'Map',
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: "#1a1a1a",  
+        }}}/>
 
         <Stack.Screen 
         name="AboutPage"
-        component={AboutPage}/>
+        component={AboutPage}
+        options={{
+          title: 'About',
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: "#1a1a1a",  
+        }}}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
