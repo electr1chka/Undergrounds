@@ -32,7 +32,7 @@ export const Groups = () => {
   const storeSelectedGroup = async() => {
     try {
         const jsonValue = JSON.stringify(selectedGroup)
-        //await AsyncStorage.setItem('@group', jsonValue)
+        await AsyncStorage.setItem('@group', jsonValue)
         const data1 = await AsyncStorage.setItem('@group', jsonValue)
         console.log(jsonValue)
       } catch (e) {
