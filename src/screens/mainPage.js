@@ -1,20 +1,15 @@
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Menu from "../component/menu"
-import Status from "../component/getInfo";
-import axios from 'axios';
-import SelectDropdown from 'react-native-select-dropdown'
+import Status from "../component/Status";
+import Groups from "../component/Groups";
 
 const MainPage = (props) => {
-  const groups = axios.get('https://my-json-server.typicode.com/electr1chka/fake-api/groups/');
   return (
     <View style={styles.mainContainer}>
       <View style={styles.homeTop}>
-        <Status></Status>
-        
-        
-        
-
+        <Status/>
+        <Groups/>
       </View>
 
       <View style={styles.menuStyle}>
