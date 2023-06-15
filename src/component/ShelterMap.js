@@ -3,58 +3,60 @@ import axios from 'axios';
 import { StyleSheet, View, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Pre-defined image map
+const images = {
+  1: require('../../assets/map_1.jpg'),
+  2: require('../../assets/map_2.jpg'),
+  3: require('../../assets/map_3.jpg'),
+  4: require('../../assets/map_4.jpg'),
+};
+
 const ShelterMap = () => {
   const [statusData, setStatusData] = useState(false);
   const [shelter, setShelterId] = useState({});
-  const [group, setGroup] = useState({});
-
+  console.log(shelter);
   useEffect(() => {
-    (async () => {
-      await fetchAlarmData();
-      await fetchGroupData();
-      await fetchShelterData();
-    }
-    )();
+    fetchAlarmData();
+    fetchGroupData();
   }, []);
 
-  const fetchAlarmData = () => {
-    const response = axios.get('https://my-json-server.typicode.com/electr1chka/fake-api/alarmstate');
-    response.then((result) => {
-      setStatusData(result.data);
-    }).catch((err) => { });
+  const fetchAlarmData = async () => {
+    try {
+      const response = await axios.get('https://my-json-server.typicode.com/electr1chka/fake-api/alarmstate');
+      setStatusData(response.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const fetchGroupData = async () => {
     try {
       const value = await AsyncStorage.getItem('@group');
       if (value !== null) {
-        setGroup(JSON.parse(value));
+        const group = JSON.parse(value);
+        fetchShelterData(group.key);
       }
     } catch (e) {
-      console.log(e)
+      console.error(e);
     }
   }
 
-  const fetchShelterData = async () => {
+  const fetchShelterData = async (groupKey) => {
     try {
-      console.log("1234", group);
-      await axios.get(`https://my-json-server.typicode.com/electr1chka/fake-api/groups/${group.key}`)
-        .then((result) => {
-          setShelterId(result.data);
-          console.log("1111", result.data);
-        })
+      const response = await axios.get(`https://my-json-server.typicode.com/electr1chka/fake-api/groups/${groupKey}`);
+      setShelterId(response.data);
     } catch (e) {
-      console.log(e)
+      console.error(e);
     }
   }
-
+  console.log(shelter.id)
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.mapPicture}
-        source={statusData.status && shelter.id ? require("../../assets/map.jpg") : require(`../../assets/map_${shelter.underground}.jpg`)} //
-      />
-    </View>
+      <View style={styles.container}>
+        <Image
+            style={styles.mapPicture}
+            source={statusData.status ?  images[shelter.underground] : require("../../assets/map.jpg")}
+        />
+      </View>
   );
 }
 
@@ -65,7 +67,6 @@ const styles = StyleSheet.create({
     resizeMode: "stretch",
     width: 375,
     height: 605,
-
   },
 
   container: {
