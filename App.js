@@ -50,7 +50,7 @@ export default function App() {
           name="AboutPage"
           component={AboutPage}
           options={{
-            title: 'About',
+            title: 'Call',
             headerTintColor: 'white',
             headerStyle: {
               backgroundColor: "#1a1a1a",

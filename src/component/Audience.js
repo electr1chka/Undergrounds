@@ -6,13 +6,23 @@ import axios from 'axios';
 const Audience = () => {
     const [audience, setAudience] = useState();
     const [message, setMessage] = useState("");
-    const [group, setGroup] = useState({});
+    const [group, setGroup] = useState(undefined);
     const [shelter, setShelter] = useState({});
     const [statusData, setStatusData] = useState(false);
 
     useEffect(() => {
         fetchAlarmData();
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        if (undefined !== group) {
+            fetchShelterData();
+        }
+    }, [group]);
+
+    useEffect(() => {
+        messageConfig();
+    }, [shelter])
 
     const changeText = (inputText) => {
         setAudience(inputText);
@@ -25,7 +35,10 @@ const Audience = () => {
             parseInt(audience / 100) % 10 > 0 &&
             parseInt(audience / 100) % 10 < 5) {
             fetchFromStorage();
-        } else console.log("Error typing, try again!")
+        } else {
+            console.log("Error typing, try again!")
+            setMessage("Помилка введення номеру аудиторії, певно ви помилились, спробуйте ще раз!")
+        }
     }
 
     const fetchFromStorage = async () => {
@@ -44,7 +57,6 @@ const Audience = () => {
         try {
             const response = await axios.get(`https://my-json-server.typicode.com/electr1chka/fake-api/groups/${groupKey}`);
             setGroup(response.data);
-            fetchShelterData();
         } catch (e) {
             console.error(e);
         }
@@ -54,7 +66,7 @@ const Audience = () => {
         try {
             const response = await axios.get(`https://my-json-server.typicode.com/electr1chka/fake-api/undergrounds/${group.underground}`);
             setShelter(response.data);
-            messageConfig();
+            //messageConfig();
         } catch (e) {
             console.error(e);
         }
@@ -70,18 +82,20 @@ const Audience = () => {
     };
 
     const messageConfig = () => {
-        let code = "";
-        if (parseInt(audience / 100) === shelter.corps) code += "1";
-        else code += "0";
-        if (parseInt(audience / 10) % 10 === 1) code += "1";
-        else code += "0";
-        console.log(shelter.corps);
-        switch (code) {
-            case "00": setMessage(`Спустіться на перший поверх, перейдіть у корпус номер ${shelter.corps} та прямуйте в напрямку укриття, що позначене на карті червоним кольором!`); break;
-            case "01": setMessage(`Ви знаходитесь на потрібному поверсі, тому лише перейдіть у корпус номер ${shelter.corps} та прямуйте в напрямку укриття, що позначене на карті червоним кольором!`); break;
-            case "10": setMessage(`Ви знаходитесь у потрібному корпусі, тому лише спустіться на перший поверх та прямуйте в напрямку укриття, що позначене на карті червоним кольором!`); break;
-            case "11": setMessage(`Ви знаходитесь у потрібному корпусі та на потрібному поверсі, прямуйте в напрямку укриття, що позначене на карті червоним кольором!`); break;
-            default: setMessage("Не вдалося знайти аудиторію, будь ласка, спробуйте ще раз");
+        if (undefined !== shelter.corps) {
+            let code = "";
+            if (parseInt(audience / 100) === shelter.corps) code += "1";
+            else code += "0";
+            if (parseInt(audience / 10) % 10 === 1) code += "1";
+            else code += "0";
+            //console.log(shelter.corps);
+            switch (code) {
+                case "00": setMessage(`Спустіться на перший поверх, перейдіть у корпус номер ${shelter.corps} та прямуйте в напрямку укриття, що позначене на карті червоним кольором!`); break;
+                case "01": setMessage(`Ви знаходитесь на потрібному поверсі, тому лише перейдіть у корпус номер ${shelter.corps} та прямуйте в напрямку укриття, що позначене на карті червоним кольором!`); break;
+                case "10": setMessage(`Ви знаходитесь у потрібному корпусі, тому лише спустіться на перший поверх та прямуйте в напрямку укриття, що позначене на карті червоним кольором!`); break;
+                case "11": setMessage(`Ви знаходитесь у потрібному корпусі та на потрібному поверсі, прямуйте в напрямку укриття, що позначене на карті червоним кольором!`); break;
+                default: setMessage("Не вдалося знайти аудиторію, будь ласка, спробуйте ще раз");
+            }
         }
     }
 
@@ -90,7 +104,7 @@ const Audience = () => {
             <Text style={styles.audienceText}>Введіть номер аудиторії</Text>
             <TextInput
                 style={styles.audienceInput}
-                editable = {statusData.status ? true : false}
+                editable={statusData.status ? true : false}
                 maxLength={3}
                 placeholder='Номер аудиторії'
                 placeholderTextColor={'#cfcfcf'}
