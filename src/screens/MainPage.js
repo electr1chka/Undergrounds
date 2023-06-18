@@ -14,7 +14,7 @@ const MainPage = (props) => {
         <Menu />
       </View>
     </View>
-    
+
   );
 };
 
@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "space-between",
     paddingHorizontal: 50,
-    backgroundColor: "#fff",
     backgroundColor: '#292928'
   },
 
