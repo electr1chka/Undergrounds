@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import { instance } from '../service/api';
 
 const Audience = () => {
     const [audience, setAudience] = useState();
@@ -55,7 +55,7 @@ const Audience = () => {
 
     const fetchGroupData = async (groupKey) => {
         try {
-            const response = await axios.get(`https://my-json-server.typicode.com/electr1chka/fake-api/groups/${groupKey}`);
+            const response = await instance.get(`/fake_api/groups/${groupKey}`);
             setGroup(response.data);
         } catch (e) {
             console.error(e);
@@ -64,7 +64,7 @@ const Audience = () => {
 
     const fetchShelterData = async () => {
         try {
-            const response = await axios.get(`https://my-json-server.typicode.com/electr1chka/fake-api/undergrounds/${group.underground}`);
+            const response = await instance.get(`/fake_api/undergrounds/${group.underground}`);
             setShelter(response.data);
             //messageConfig();
         } catch (e) {
@@ -74,8 +74,8 @@ const Audience = () => {
 
     const fetchAlarmData = async () => {
         try {
-            const response = await axios.get('https://my-json-server.typicode.com/electr1chka/fake-api/alarmstate');
-            setStatusData(response.data);
+            const response = await instance.get('/fake_api/alarmstate');
+            setStatusData(response.data[0]);
         } catch (err) {
             console.error(err);
         }

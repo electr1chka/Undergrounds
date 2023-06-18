@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { StyleSheet, View, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { instance } from '../service/api';
 // Pre-defined image map
+
+
 const images = {
   1: require('../../assets/map_1.jpg'),
   2: require('../../assets/map_2.jpg'),
@@ -14,6 +15,7 @@ const images = {
 const ShelterMap = () => {
   const [statusData, setStatusData] = useState(false);
   const [shelter, setShelterId] = useState({});
+
   useEffect(() => {
     fetchAlarmData();
     fetchGroupData();
@@ -21,10 +23,11 @@ const ShelterMap = () => {
 
   const fetchAlarmData = async () => {
     try {
-      const response = await axios.get('https://my-json-server.typicode.com/electr1chka/fake-api/alarmstate');
-      setStatusData(response.data);
+      const response = await instance.get(`/fake_api/alarmstate`);
+      console.log(response);
+      setStatusData(response.data[0]);
     } catch (err) {
-      console.error(err);
+      console.error("125125", err.payload);
     }
   };
 
@@ -41,8 +44,8 @@ const ShelterMap = () => {
   }
 
   const fetchShelterData = async (groupKey) => {
-    try {
-      const response = await axios.get(`https://my-json-server.typicode.com/electr1chka/fake-api/groups/${groupKey}`);
+    try {     
+      const response = await instance.get(`/fake_api/groups/${groupKey}`);
       setShelterId(response.data);
     } catch (e) {
       console.error(e);

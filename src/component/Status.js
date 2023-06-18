@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
-import axios from 'axios';
+import { instance } from '../service/api';
 
 const Status = () => {
+
   const chillMessage = "Вдалого дня!";
   const alarmMessage = "Увага! Повітряна тривога. Зберігайте спокій та пройдіть в укриття!";
 
   const [statusData, setStatusData] = useState(false);
+
   useEffect(() => {
     fetchData();
+    const interval = setInterval(fetchData, 5000);
+    return() =>{
+      clearInterval(interval);
+    };
   }, []);
 
   const fetchData = () => {
-    const response = axios.get('https://my-json-server.typicode.com/electr1chka/fake-api/alarmstate');
+    const response = instance.get(`/fake_api/alarmstate`);
     response.then((result) => {
-      setStatusData(result.data);
-    }).catch((err) => { });
+      setStatusData(result.data[0]);
+      console.log(result.data[0]);
+    }).catch((err) => { console.error(err) });
   };
 
   return (

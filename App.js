@@ -8,7 +8,11 @@ import MapPage from './src/screens/MapPage';
 import AboutPage from './src/screens/AboutPage';
 import SetupPage from './src/screens/SetupPage';
 
+
+
 export default function App() {
+  const url = process.env.REACT_APP_BASE_API_URL;
+  //console.log(`${url}/fake_api/docs/`)
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
