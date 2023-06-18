@@ -1,67 +1,16 @@
 import React from 'react';
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import MainPage from "./src/screens/MainPage";
-import MapPage from './src/screens/MapPage';
-import AboutPage from './src/screens/AboutPage';
-import SetupPage from './src/screens/SetupPage';
 import {AlarmStateApiDataProvider} from "./src/context/AlarmStateApiDataProvider";
+import {AppNavigator} from "./src/AppNavigator";
 
 export default function App() {
-  const url = process.env.REACT_APP_BASE_API_URL;
-  //console.log(`${url}/fake_api/docs/`)
-  const Stack = createNativeStackNavigator();
   return (
     <AlarmStateApiDataProvider>
         <NavigationContainer>
-      <Stack.Navigator initialRouteName='MainPage'>
-        <Stack.Screen name="Home"
-          options={{
-            title: 'Home',
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: "#1a1a1a",
-            }
-          }}>
-          {(props) => <MainPage {...props} channelName={"undergrounds"} />}
-        </Stack.Screen>
-
-        <Stack.Screen
-          name="MapPage"
-          component={MapPage}
-          options={{
-            title: 'Map',
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: "#1a1a1a",
-            }
-          }} />
-
-        <Stack.Screen
-          name="SetupPage"
-          component={SetupPage}
-          options={{
-            title: 'Setup',
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: "#1a1a1a",
-            }
-          }} />
-
-        <Stack.Screen
-          name="AboutPage"
-          component={AboutPage}
-          options={{
-            title: 'Call',
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: "#1a1a1a",
-            }
-          }} />
-      </Stack.Navigator>
-</NavigationContainer>
+            <AppNavigator />
+        </NavigationContainer>
     </AlarmStateApiDataProvider>
   )
 }
