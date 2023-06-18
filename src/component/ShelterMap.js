@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { instance } from '../service/api';
+import { api } from '../service/api';
+import {AlarmStateApiDataContext} from "../context/AlarmStateApiDataContext";
+
 // Pre-defined image map
-
-
 const images = {
   1: require('../../assets/map_1.jpg'),
   2: require('../../assets/map_2.jpg'),
@@ -13,23 +13,13 @@ const images = {
 };
 
 const ShelterMap = () => {
-  const [statusData, setStatusData] = useState(false);
   const [shelter, setShelterId] = useState({});
 
+  const alarmStateData = useContext(AlarmStateApiDataContext);
+
   useEffect(() => {
-    fetchAlarmData();
     fetchGroupData();
   }, []);
-
-  const fetchAlarmData = async () => {
-    try {
-      const response = await instance.get(`/fake_api/alarmstate`);
-      console.log(response);
-      setStatusData(response.data[0]);
-    } catch (err) {
-      console.error("125125", err.payload);
-    }
-  };
 
   const fetchGroupData = async () => {
     try {
@@ -44,8 +34,8 @@ const ShelterMap = () => {
   }
 
   const fetchShelterData = async (groupKey) => {
-    try {     
-      const response = await instance.get(`/fake_api/groups/${groupKey}`);
+    try {
+      const response = await api.get(`/fake_api/groups/${groupKey}`);
       setShelterId(response.data);
     } catch (e) {
       console.error(e);
@@ -55,7 +45,7 @@ const ShelterMap = () => {
       <View style={styles.container}>
         <Image
             style={styles.mapPicture}
-            source={statusData.status ?  images[shelter.underground] : require("../../assets/map.jpg")}
+            source={alarmStateData.status ?  images[shelter.underground] : require("../../assets/map.jpg")}
             //source={images[shelter.underground]}
         />
       </View>

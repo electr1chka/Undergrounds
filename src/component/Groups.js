@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { instance } from '../service/api';
+import { api } from '../service/api';
 
 export const Groups = () => {
 
@@ -29,9 +29,9 @@ export const Groups = () => {
     }
 
     const fetchData = async () => {
-        
-        await instance.get('/fake_api/groups/')
-            .then((response) => {               
+
+        await api.get('/fake_api/groups/')
+            .then((response) => {
                 let newArray = response.data.map((item) => {
                     return { key: item.id, value: item.name}
                 })

@@ -1,38 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
-import { instance } from '../service/api';
+import { api } from '../service/api';
+import {AlarmStateApiDataContext} from "../context/AlarmStateApiDataContext";
 
 const Status = () => {
 
   const chillMessage = "Вдалого дня!";
   const alarmMessage = "Увага! Повітряна тривога. Зберігайте спокій та пройдіть в укриття!";
 
-  const [statusData, setStatusData] = useState(false);
-
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return() =>{
-      clearInterval(interval);
-    };
-  }, []);
-
-  const fetchData = () => {
-    const response = instance.get(`/fake_api/alarmstate`);
-    response.then((result) => {
-      setStatusData(result.data[0]);
-      console.log(result.data[0]);
-    }).catch((err) => { console.error(err) });
-  };
+  const alarmStateData = useContext(AlarmStateApiDataContext);
 
   return (
     <View>
       <Image
         style={styles.headerImage}
-        source={statusData.status ? require("../../assets/alarm_icon.png") : require("../../assets/chill_icon.png")}
+        source={alarmStateData.status ? require("../../assets/alarm_icon.png") : require("../../assets/chill_icon.png")}
       />
       <View>
-        <Text style={styles.message}>{statusData.status ? alarmMessage : chillMessage}</Text>
+        <Text style={styles.message}>{alarmStateData.status ? alarmMessage : chillMessage}</Text>
       </View>
     </View>
   );
