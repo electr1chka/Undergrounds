@@ -14,7 +14,6 @@ const images = {
 const ShelterMap = () => {
   const [statusData, setStatusData] = useState(false);
   const [shelter, setShelterId] = useState({});
-  console.log(shelter);
   useEffect(() => {
     fetchAlarmData();
     fetchGroupData();
@@ -49,12 +48,12 @@ const ShelterMap = () => {
       console.error(e);
     }
   }
-  console.log(shelter.id)
   return (
       <View style={styles.container}>
         <Image
             style={styles.mapPicture}
             source={statusData.status ?  images[shelter.underground] : require("../../assets/map.jpg")}
+            //source={images[shelter.underground]}
         />
       </View>
   );

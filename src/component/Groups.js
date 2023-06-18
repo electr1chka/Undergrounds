@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Text, View, StyleSheet } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,8 +14,7 @@ export const Groups = () => {
         (async () => {
             await fetchFromStorage();
             await fetchData();
-        }
-        )();
+        })();
     }, []);
 
     const fetchFromStorage = async () => {
@@ -32,7 +32,7 @@ export const Groups = () => {
         await axios.get('https://my-json-server.typicode.com/electr1chka/fake-api/groups')
             .then((response) => {
                 let newArray = response.data.map((item) => {
-                    return { key: item.id, value: item.name }
+                    return { key: item.id, value: item.name}
                 })
                 setGroupsData(newArray);
             }).catch((err) => { });
@@ -41,22 +41,42 @@ export const Groups = () => {
     const storeData = async () => {
         try {
             const group = groupsData[selectedGroup - 1];
-            if(null != group){
+            if (null != group) {
                 await AsyncStorage.setItem('@group', JSON.stringify(group));
             }
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
 
     return (
-        <SelectList        
-            setSelected={setSelectedGroup}
-            data={groupsData}
-            defaultOption={defaultGroup}
-            onSelect={async () => storeData()}
-        />
+        <View>
+            <Text style={styles.groupText}>Обреіть потрібну групу!</Text>
+            <SelectList
+                inputStyles={styles.groupList}
+                dropdownTextStyles={styles.groupList}
+                setSelected={setSelectedGroup}
+                data={groupsData}
+                defaultOption={defaultGroup}
+                onSelect={async () => storeData()}
+            />
+        </View>
     )
 }
+
+const styles = StyleSheet.create({
+    groupText: {
+        display: 'flex',
+        color: "white",
+        fontWeight: 'bold',
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+
+    groupList: {
+        color: 'white',
+        fontWeight: 'bold'
+    }
+});
 
 export default Groups;

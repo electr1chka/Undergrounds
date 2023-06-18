@@ -10,8 +10,12 @@ const Menu = () =>{
                 <Text style={styles.textStyle}>Map</Text>
            </TouchableOpacity>
 
+           <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('SetupPage')}>
+                <Text style={styles.textStyle}>Setup</Text>
+           </TouchableOpacity>
+
            <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('AboutPage')}>
-                <Text style={styles.textStyle}>About</Text>
+                <Text style={styles.textStyle}>Call</Text>
            </TouchableOpacity>
         </View>
     )
@@ -29,7 +33,7 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 5,
         elevation: 2,
-        width: 200,
+        width: 130,
         height: 60,
         alignContent: 'center',
     },
